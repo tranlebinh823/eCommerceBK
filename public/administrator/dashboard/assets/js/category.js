@@ -1,12 +1,14 @@
 (function($) {
     'use strict';
     $(document).ready(function() {
-        $('#categoryTitle').on('keyup', function(){
-            var title = $('#categoryTitle').val().toLowerCase().split(' ').join('-');
+        $('#categoryTitle, #subcategoryTitle').on('keyup', function(){
+            var title = $(this).val().toLowerCase().split(' ').join('-');
             var siteLink = $(this).siblings('p').find('.site-link').attr('data-link');
             $(this).siblings('p').prop('hidden', false).find('.site-link').text(siteLink + title);
-            $('#editPermalink').val(title).attr('data-link', title);
+            $(this).siblings('p').find('#editPermalink').val(title).attr('data-link', title);
         });
+
+
         $('#editPermaBtn').on('click', function(){
             var siteLink = $('#categoryTitle').siblings('p').find('.site-link').attr('data-link');
             $('#editPermalink').prop('hidden', false);
@@ -32,8 +34,8 @@
             $('#createPerma, #cancelPerma').prop('hidden', true);
             $('#editPermaBtn').prop('hidden', false);
         });
-    
-    
+
+
         let ajaxConfig = {
             ajaxRequester: function (config, uploadFile, pCall, sCall, eCall) {
                 let progress = 0
@@ -54,8 +56,8 @@
             ajaxConfig: ajaxConfig,
         });
         $('.jquery-uploader .upload-button').html('<i class="fa-light fa-image"></i><br/><span>Recommended: 300 * 300</a>');
-    
-    
+
+
         $('#addCatThumb').on('click', function(){
             $(this).siblings('.jquery-uploader').slideToggle();
         });
