@@ -19,6 +19,23 @@
     <!-- main content start -->
     <div class="main-content">
         @include('admin.layouts.blocks.title')
+          @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if(Session::has('success'))
+                    <p class="alert alert-info">{{ Session::get('success') }}</p>
+                @endif
+                @if(Session::has('error'))
+                    <p class="alert alert-danger">{{ Session::get('error') }}</p>
+                @endif
+
         @yield('content')
         <!-- footer start -->
         @include('admin.layouts.blocks.footer')

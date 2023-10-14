@@ -1,33 +1,46 @@
 @extends('admin.layouts.app')
-@section('module', 'Category')
+@section('module', 'Brand')
 @section('action', 'Manage')
 @section('content')
 <div class="row g-4">
     <div class="col-xxl-4 col-md-5">
         <div class="panel">
             <div class="panel-header">
-                <h5>Add New Category</h5>
+                <h5>Add New Brand</h5>
             </div>
-            <form action="{{ route('admin.categories.store') }}" method="POST">
+            <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="panel-body">
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label">Category Name</label>
-                            <input type="text" class="form-control form-control-sm" id="categoryTitle" name="category_name">
-                            <p class="perma-txt" hidden>
-                                Slug: <span data-link="https://example.com/" class="site-link text-primary" id="categoryPermalink">https://example.com/</span>
-                                <input type="text" class="form-control form-control-sm" hidden="" name="slug" id="editPermalink">
-                                <!-- Add the logic for the edit permalink buttons as needed -->
-                            </p>
+                            <label class="form-label">Brand Name</label>
+                            <input type="text" class="form-control form-control-sm" id="brandName" name="brand_name">
                         </div>
-
 
                         <div class="col-12">
-                            <label class="form-label">Description</label>
-                            <textarea rows="5" class="form-control form-control-sm" name="description"></textarea>
+                            <label class="form-label">Logo</label>
+                            <input type="file" class="form-control form-control-sm" id="brandLogo" name="logo">
                         </div>
 
+                        <div class="col-12">
+                            <img id="previewImage" src="{{ asset('placeholder-image.jpg') }}"style="max-width: 200px;">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Is Featured</label>
+                            <select class="form-control form-control-sm" name="is_featured">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Status</label>
+                            <select class="form-control form-control-sm" name="status">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
 
                         <div class="col-12 d-flex justify-content-end">
                             <div class="btn-box">
@@ -37,14 +50,13 @@
                     </div>
                 </div>
             </form>
-
         </div>
-
     </div>
+
     <div class="col-xxl-8 col-md-7">
         <div class="panel">
             <div class="panel-header" style="padding: 2% 2%">
-                <h5>All Categories</h5>
+                <h5>All Brands</h5>
                 <div class="btn-box d-flex gap-3">
                     <div id="tableSearch"></div>
                     <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
@@ -62,28 +74,28 @@
                             </li>
                             <li>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="showDescription" checked>
-                                    <label class="form-check-label" for="showDescription">
-                                        Description
+                                    <input class="form-check-input" type="checkbox" id="showLogo" checked>
+                                    <label class="form-check-label" for="showLogo">
+                                        Logo
                                     </label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="showSlug" checked>
-                                    <label class="form-check-label" for="showSlug">
-                                        Slug
+                                    <input class="form-check-input" type="checkbox" id="showIsFeatured" checked>
+                                    <label class="form-check-label" for="showIsFeatured">
+                                        Is Featured
                                     </label>
                                 </div>
                             </li>
-                            {{-- <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showCount" checked>
-                                        <label class="form-check-label" for="showCount">
-                                            Count
-                                        </label>
-                                    </div>
-                                </li> --}}
+                            <li>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="showStatus" checked>
+                                    <label class="form-check-label" for="showStatus">
+                                        Status
+                                    </label>
+                                </div>
+                            </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="showAction" checked>
@@ -121,38 +133,41 @@
                             </form>
                         </div>
                         <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
-                            <div id="productTableLength"></div>
+                            <div id="brandTableLength"></div>
                         </div>
                     </div>
                 </div>
-                <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
+                <table class="table table-dashed table-hover digi-dataTable all-brand-table table-striped" id="allBrandTable">
                     <thead>
                         <tr>
                             <th class="no-sort">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="markAllProduct">
+                                    <input class="form-check-input" type="checkbox" id="markAllBrand">
                                 </div>
                             </th>
-                            <th>Category Name</th>
-                            <th>Slug Category</th>
-                            {{-- <th>Count</th> --}}
+                            <th>Brand Name</th>
+                            <th>Logo</th>
+                            <th>Is Featured</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($items as $i)
+                        @foreach ($brands as $brand)
                         <tr>
                             <td>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>{{ $i->category_name }}</td>
-                            <td>{{ $i->slug }}</td>
+                            <td>{{ $brand->brand_name }}</td>
+                            <td><img src="{{ asset('upload/' . $brand->logo) }}" alt="{{ $brand->brand_name }}" style="max-width: 50px;"></td>
+                            <td>{{ $brand->is_featured == 1 ? 'Yes' : 'No' }}</td>
+                            <td>{{ $brand->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td style="text-align: center;">
-                                <a style="margin: 0 5px" href="{{ route('admin.categories.show',  $i->id) }}"><i class="fa-light fa-eye"></i></a>
-                                <a style="margin: 0 5px" href="{{ route('admin.categories.edit',  $i->id) }}"><i class="fa-light fa-pen-to-square"></i></a>
-                                <a style="margin: 0 5px" onclick="return confirm('Are you sure?')" href="{{ route('admin.categories.destroy',  $i->id) }}"><i class="fa-light fa-trash"></i></a>
+                                <a style="margin: 0 5px" href="{{ route('admin.brands.show', $brand->id) }}"><i class="fa-light fa-eye"></i></a>
+                                <a style="margin: 0 5px" href="{{ route('admin.brands.edit', $brand->id) }}"><i class="fa-light fa-pen-to-square"></i></a>
+                                <a style="margin: 0 5px" onclick="return confirm('Are you sure?')" href="{{ route('admin.brands.destroy', $brand->id) }}"><i class="fa-light fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach
@@ -161,9 +176,24 @@
 
                 <div class="table-bottom-control"></div>
             </div>
-
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#brandLogo').on('change', function() {
+            var input = $(this)[0];
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#previewImage').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+
+</script>
 
 @endsection

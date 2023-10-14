@@ -25,6 +25,11 @@
                                     class="sidebar-link">Create Product</a></li>
                         </ul>
                     </li>
+                      <li class="sidebar-dropdown-item">
+                        <a href="{{ route('admin.brands.manage') }}" class="sidebar-link"><span class="nav-icon"><i
+                                    class="fa-light fa-layer-group"></i></span> <span
+                                class="sidebar-txt">Brands</span></a>
+                    </li>
                     <li class="sidebar-dropdown-item">
                         <a href="{{ route('admin.categories.manage') }}" class="sidebar-link"><span class="nav-icon"><i
                                     class="fa-light fa-layer-group"></i></span> <span

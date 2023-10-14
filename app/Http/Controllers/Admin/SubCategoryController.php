@@ -12,19 +12,22 @@ class SubCategoryController extends Controller
 {
     public function manage()
     {
-        $data['items'] = DB::table('subcategories')
+
+        $subcategory = DB::table('subcategories')
             ->join('categories', 'subcategories.category_id', '=', 'categories.id')
-            ->select('subcategories.*', 'categories.*')
+            ->select('categories.category_name', 'subcategories.*')
             ->get();
-        return view('admin.subcategories.manage', $data);
+        $category = DB::table('categories')->get();
+
+        return view('admin.subcategories.manage', compact('subcategory', 'category'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $data['items'] = DB::table('categories')->get();
-        return view('admin.subcategories.create',$data);
+        $subcategory = DB::table('subcategories')->get();
+        return view('admin.subcategories.create', compact('subcategory'));
     }
     /**
      * Store a newly created resource in storage.
@@ -40,26 +43,37 @@ class SubCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        $data['items'] = DB::table('subcategories')
-            ->where('id', $id)
+        $subcategory = DB::table('subcategories')
+            ->join('categories', 'subcategories.category_id', '=', 'categories.id')
+            ->select('categories.category_name as parent_category_name', 'subcategories.*')
+            ->where('subcategories.id', '=', $id)
             ->first();
-        return view('admin.subcategories.show', $data);
+        if (!$subcategory) {
+            return redirect()->route('admin.subcategories.index')->with('error', 'Không tìm thấy danh mục con');
+        }
+
+        return view('admin.subcategories.show', compact('subcategory'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UpdateRequest $id)
+    public function edit($id)
     {
-        $data['items_cat'] = DB::table('categories')->get();
-
-        $data['items'] = DB::table('subcategories')
-            ->where('id', $id)
+        $subcategory = DB::table('subcategories')
+            ->join('categories', 'subcategories.category_id', '=', 'categories.id')
+            ->select('categories.category_name as parent_category_name', 'subcategories.*')
+            ->where('subcategories.id', '=', $id)
             ->first();
+        $category = DB::table('categories')->get();
 
-        return view('admin.subcategories.edit', $data);
+        if (!$subcategory) {
+            return redirect()->route('admin.subcategories.index')->with('error', 'Không tìm thấy danh mục con');
+        }
+
+        return view('admin.subcategories.edit', compact('subcategory', 'category'));
     }
 
     /**
@@ -68,6 +82,7 @@ class SubCategoryController extends Controller
     public function update(UpdateRequest $request, string $id)
     {
         $data = $request->except('_token');
+
         $data['updated_at'] = new \DateTime();
         DB::table('subcategories')->where('id', $id)->update($data);
         return redirect()->route('admin.subcategories.manage')->with('success', 'Edit thành công');
@@ -78,6 +93,7 @@ class SubCategoryController extends Controller
      */
     public function destroy(string $id)
     {
+
         DB::table('subcategories')->where('id', $id)->delete();
         return redirect()->route('admin.subcategories.manage')->with('success', 'Xóa thành công');
     }
