@@ -19,6 +19,7 @@
             Route::post('update/{id}', 'update')->name('update');
             Route::get('destroy/{id}', 'destroy')->name('destroy');
         });
+
         Route::prefix('subcategories')->controller(SubCategoryController::class)->name('subcategories.')->group(function () {
             Route::get('/', 'manage')->name('manage');
             Route::post('store', 'store')->name('store');
@@ -35,6 +36,7 @@
             Route::get('show/{id}', 'show')->name('show');
             Route::post('update/{id}', 'update')->name('update');
             Route::get('destroy/{id}', 'destroy')->name('destroy');
+            Route::post('getSubcategories', 'getSubcategories')->name('getSubcategories');
         });
         Route::prefix('brands')->controller(BrandController::class)->name('brands.')->group(function () {
             Route::get('/', 'manage')->name('manage');

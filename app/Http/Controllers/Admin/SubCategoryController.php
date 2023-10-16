@@ -21,14 +21,7 @@ class SubCategoryController extends Controller
 
         return view('admin.subcategories.manage', compact('subcategory', 'category'));
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $subcategory = DB::table('subcategories')->get();
-        return view('admin.subcategories.create', compact('subcategory'));
-    }
+  
     /**
      * Store a newly created resource in storage.
      */

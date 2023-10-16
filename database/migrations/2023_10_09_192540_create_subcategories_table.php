@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('sub_category_name');
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
 

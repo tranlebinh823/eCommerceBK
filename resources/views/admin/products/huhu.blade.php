@@ -2,6 +2,7 @@
 @section('module', 'Product')
 @section('action', 'Create')
 @section('content')
+
 <form action="{{ route('admin.products.store') }}" enctype="multipart/form-data" method="POST">
     @csrf
     <div class="row g-4">
@@ -10,15 +11,14 @@
                 <div class="panel-body product-title-input">
                     <label class="form-label">Product Name</label>
                     <input type="text" class="form-control" id="productName" name="product_name" placeholder="Name for product">
-                    <br>
                     <label class="form-label">Product Title</label>
                     <input type="text" class="form-control" id="productTitle" name="product_title" placeholder="Title for product">
                     <p class="perma-txt" hidden>
                         Permalink: <span data-link="https://example.com/" class="site-link text-primary" id="productPermalink">https://example.com/</span>
                         <input type="text" class="form-control form-control-sm" name="slug" hidden id="editPermalink">
-                        <button type="button" class="btn-flush bg-primary" id="editPermaBtn">Edit</button type="button">
-                        <button type="button" class="btn-flush bg-success" id="createPerma" hidden>OK</button type="button">
-                        <button type="button" class="btn-flush bg-danger" id="cancelPerma" hidden>Cancel</button type="button">
+                        <button class="btn-flush bg-primary" id="editPermaBtn">Edit</button>
+                        <button class="btn-flush bg-success" id="createPerma" hidden>OK</button>
+                        <button class="btn-flush bg-danger" id="cancelPerma" hidden>Cancel</button>
                     </p>
                 </div>
             </div>
@@ -26,8 +26,8 @@
                 <div class="panel-header">
                     <h5> Description</h5>
                     <div class="btn-box d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button type="button">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button type="button">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -45,16 +45,16 @@
                         </div>
                     </div>
                     <div class="btn-box d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button type="button">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button type="button">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
                     </div>
                 </div>
                 <div class="panel-body">
                     <nav>
                         <div class="btn-box d-flex flex-wrap gap-1 mb-30" id="nav-tab" role="tablist">
-                            <button type="button" class="btn btn-sm btn-outline-primary active" id="nav-media-tab" data-bs-toggle="tab" data-bs-target="#nav-media" type="button type=" button"" role="tab" aria-controls="nav-media" aria-selected="true">Ảnh</button type="button">
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="nav-inventory-tab" data-bs-toggle="tab" data-bs-target="#nav-inventory" type="button type=" button"" role="tab" aria-controls="nav-inventory" aria-selected="false">Kho</button type="button">
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button type=" button"" role="tab" aria-controls="nav-price" aria-selected="false">Giá</button type="button">
+                            <button class="btn btn-sm btn-outline-primary active" id="nav-media-tab" data-bs-toggle="tab" data-bs-target="#nav-media" type="button" role="tab" aria-controls="nav-media" aria-selected="true">Ảnh</button>
+                            <button class="btn btn-sm btn-outline-primary" id="nav-inventory-tab" data-bs-toggle="tab" data-bs-target="#nav-inventory" type="button" role="tab" aria-controls="nav-inventory" aria-selected="false">Kho</button>
+                            <button class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price" aria-selected="false">Giá</button>
                         </div>
                     </nav>
                     <div class="tab-content product-data-tab" id="nav-tabContent">
@@ -63,24 +63,21 @@
                                 <div class="col-xxl-3 col-md-4 col-5 col-xs-12">
                                     <div class="add-thumbnail product-image-upload">
                                         <div class="part-txt">
-                                            <h5>Ảnh nhỏ <span>(jpeg/png)</span></h5>
+                                            <h5>Add thumbnail <span>(jpeg/png)</span></h5>
                                         </div>
-                                        <input type="file" class="image-input" id="thumbUpload" name="images">
-                                    </div>
-                                    <div class="col-12">
-                                        <img id="image-preview" src="" alt="" style="max-width: 100px; max-height: 100px;">
-
+                                        <input type="text" name="images" class="image-input" id="thumbUpload">
                                     </div>
                                 </div>
                                 <div class="col-xxl-9 col-md-8 col-7 col-xs-12">
                                     <div class="add-gallery-img product-image-upload">
                                         <div class="part-txt">
-                                            <h5>Ảnh trưng bày <span>(jpeg/png)</span></h5>
+                                            <h5>Add gallery <span>(jpeg/png)</span></h5>
                                         </div>
-                                        <input type="file" class="image-input" id="galleryUpload" multiple name="images_gallery[]">
+                                        <input type="text" name="images_gallery[]" class="image-input" id="galleryUpload">
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="tab-pane fade" id="nav-inventory" role="tabpanel" aria-labelledby="nav-inventory-tab" tabindex="0">
                             <div class="row col-md-10">
@@ -118,8 +115,8 @@
                 <div class="panel-header">
                     <h5>Published</h5>
                     <div class="btn-box d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button type="button">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button type="button">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -140,18 +137,20 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <label for="publish">Publish (date and time):</label>
-                        <input type="datetime-local" id="publish" name="publish">
+                        <div class="publish-date">
+                            <label>Published on: </label>
+                            <input class="input-flush" type="text" id="publishDate" name="publish">
+                            <label for="publishDate" class="cursor-pointer text-primary"><i class="fa-light fa-pen-to-square"></i></label>
+                        </div>
                     </div>
-
                 </div>
             </div>
             <div class="panel mb-30">
                 <div class="panel-header">
                     <h5>Brands</h5>
                     <div class="btn-box d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button type="button">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button type="button">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -178,8 +177,8 @@
                 <div class="panel-header">
                     <h5>Category</h5>
                     <div class="btn-box d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button type="button">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button type="button">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -189,22 +188,25 @@
                     </form>
                     <div class="product-categories">
                         <div class="category">
-                            <label class="form-label">Category</label>
-                            <select class="form-control form-control-sm" name="category_id" id="categorySelect">
+                            <select name="category_id" class="form-control">
                                 <option value="">Select a Category</option>
-                                @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">
-                                    {{ $category->category_name }}
+                                @foreach ($categories as $categories)
+                                <option value="{{ $categories->id }}">
+                                    {{ $categories->category_name }}
                                 </option>
                                 @endforeach
                             </select>
-                            <label class="form-label">Subcategory</label>
-                            <select class="form-control form-control-sm" name="subcategory_id" id="subcategorySelect">
-                                <option value="">Select a Subcategory</option>
-                            </select>
-
                         </div>
-
+                        <div class="subcategory">
+                            <select name="subcategory_id" class="form-control">
+                                <option value="">Select a Subcategory</option>
+                                @foreach ($subcategories as $subcategories)
+                                <option value="{{ $subcategories->id }}">
+                                    {{ $subcategories->sub_category_name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="border-top"></div>
@@ -213,8 +215,8 @@
                 <div class="panel-header">
                     <h5>Products Tags</h5>
                     <div class="btn-box d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button type="button">
-                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button type="button">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -238,35 +240,9 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Create Products</button type="button">
+
     </div>
+    <button class="btn btn-primary" type="submit">Create Products</button>
 </form>
-
-<script>
-    $(document).ready(function() {
-        $('#categorySelect').on('change', function() {
-            var categoryId = $(this).val();
-
-            $.ajax({
-                url: '{{ route('admin.products.getSubcategories') }}', // Sử dụng route() để tạo URL
-                method: 'POST'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , category_id: id
-                }
-                , success: function(response) {
-                    $('#subcategorySelect').empty();
-                    $.each(response.subcategories, function(key, value) {
-                        $('#subcategorySelect').append('<option value="' + key + '">' + value + '</option>');
-                    });
-                }
-                , error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-
-</script>
 
 @endsection

@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('logo');
             $table->string('brand_name');
-            $table->string('slug');
-            $table->boolean('is_featured');
-            $table->boolean('status');
+            $table->boolean('is_featured')->default(true);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

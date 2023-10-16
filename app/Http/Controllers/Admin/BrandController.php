@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Brand\StoreRequest;
 use App\Http\Requests\Admin\Brand\UpdateRequest;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\DB;
 
@@ -19,14 +20,16 @@ class BrandController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->except('_token');
-        $logo = $request->logo;
-        $image = time() . "-" . $logo->getClientOriginalName();
-        $path = public_path() . "/upload";
-        $logo->move($path, $image);
-        $data['logo'] = $image;
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $logo = time() . "-" . $file->getClientOriginalName();
+            $path = public_path() . "/upload";
+            $file->move($path, $logo);
+            $data['logo'] = $logo;
+        }
         $data['created_at'] = now();
         DB::table('brands')->insert($data);
-        return redirect()->route('admin.brands.manage')->with('success', 'Thương hiệu đã được tạo thành công');
+        return redirect()->route('admin.brands.manage')->with('success', 'Tạo thương hiệu thành công');
     }
 
     public function show($id)
@@ -47,19 +50,13 @@ class BrandController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->except('_token');
-
-        if (empty($data['logo'])) {
-            $da['logo'] = DB::table('brands')->where('id', $id)->first();
-            $data['logo'] = $da['logo']->logo;
-        } else {
-            $logo = $request->logo;
-            $image = time() . "-" . $logo->getClientOriginalName();
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $logo = time() . "-" . $file->getClientOriginalName();
             $path = public_path() . "/upload";
-            $logo->move($path, $image);
-            $data['logo'] = $image;
+            $file->move($path, $logo);
+            $data['logo'] = $logo;
         }
-
-
         $data['updated_at'] = now();
         DB::table('brands')->where('id', $id)->update($data);
         return redirect()->route('admin.brands.manage')->with('success', 'Thương hiệu đã được cập nhật thành công');

@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name');
-            $table->string('product_title');
-            $table->string('slug')->unique();
-            $table->text('pro_description');
-            $table->text('images');
-            $table->text('images_gallery');
-            $table->text('short_description');
-            $table->integer('stock');
-            $table->double('price');
-            $table->double('offer_price')->nullable();
-            $table->string('product_tag')->unique();
-            $table->integer('status')->default(0);
-            $table->integer('visibility')->default(0);
-            $table->datetime('publish');
+            $table->string('product_name'); //
+            $table->string('product_title');    //
+            $table->string('slug')->unique();   //
+            $table->text('pro_description');    //
+            $table->text('images');     //
+            $table->text('images_gallery'); //
+            $table->text('short_description');  //
+            $table->integer('stock');   //
+            $table->double('price');    //
+            $table->double('offer_price')->nullable(); //
+            $table->string('product_tag')->unique(); //
+            $table->boolean('status')->default(true);   //
+            $table->boolean('visibility')->default(true);   //
+            $table->datetime('publish');    //
             //! sub_categories
             $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->foreign('subcategory_id')->references('id')->on('subcategories');

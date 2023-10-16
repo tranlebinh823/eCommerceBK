@@ -8,24 +8,24 @@
             <div class="panel-header">
                 <h5>Add New Brand</h5>
             </div>
-            <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.brands.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="panel-body">
                     <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label">Brand Name</label>
-                            <input type="text" class="form-control form-control-sm" id="brandName" name="brand_name">
-                        </div>
 
                         <div class="col-12">
                             <label class="form-label">Logo</label>
-                            <input type="file" class="form-control form-control-sm" id="brandLogo" name="logo">
+                            <input type="file" class="form-control form-control-sm" id="brandLogo" name="logo" onchange="previewImage(this)">
                         </div>
-
                         <div class="col-12">
-                            <img id="previewImage" src="{{ asset('placeholder-image.jpg') }}"style="max-width: 200px;">
-                        </div>
+                            <img id="image-preview" src="" alt="" style="max-width: 100px; max-height: 100px;">
 
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Brand Name</label>
+                            <input type="text" class="form-control form-control-sm" id="BrandTitle" name="brand_name">
+
+                        </div>
                         <div class="col-12">
                             <label class="form-label">Is Featured</label>
                             <select class="form-control form-control-sm" name="is_featured">
@@ -33,7 +33,6 @@
                                 <option value="0">No</option>
                             </select>
                         </div>
-
                         <div class="col-12">
                             <label class="form-label">Status</label>
                             <select class="form-control form-control-sm" name="status">
@@ -41,6 +40,7 @@
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
+
 
                         <div class="col-12 d-flex justify-content-end">
                             <div class="btn-box">
@@ -50,9 +50,10 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
 
+        </div>
+
+    </div>
     <div class="col-xxl-8 col-md-7">
         <div class="panel">
             <div class="panel-header" style="padding: 2% 2%">
@@ -63,23 +64,24 @@
                     <div class="digi-dropdown dropdown">
                         <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa-regular fa-ellipsis-vertical"></i></button>
                         <ul class="digi-dropdown-menu dropdown-menu">
-                            <li class="dropdown-title">Show Table Title</li>
+                            <li cla ss="dropdown-title">Show Table Title</li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="showName" checked>
                                     <label class="form-check-label" for="showName">
-                                        Name
+                                        Brand Name
                                     </label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="showLogo" checked>
+                                    <input class="form-check-input" type="file" id="showLogo" checked>
                                     <label class="form-check-label" for="showLogo">
                                         Logo
                                     </label>
                                 </div>
                             </li>
+
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="showIsFeatured" checked>
@@ -133,41 +135,45 @@
                             </form>
                         </div>
                         <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
-                            <div id="brandTableLength"></div>
+                            <div id="productTableLength"></div>
                         </div>
                     </div>
                 </div>
-                <table class="table table-dashed table-hover digi-dataTable all-brand-table table-striped" id="allBrandTable">
+                <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
                     <thead>
                         <tr>
                             <th class="no-sort">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="markAllBrand">
+                                    <input class="form-check-input" type="checkbox" id="markAllProduct">
                                 </div>
                             </th>
-                            <th>Brand Name</th>
+                            <th>#</th>
                             <th>Logo</th>
-                            <th>Is Featured</th>
+                            <th>Brand Name</th>
+                            <th>Is_featured</th>
                             <th>Status</th>
+                            <th>Create</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($brands as $brand)
+                        @foreach ($brands as $i)
                         <tr>
                             <td>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>{{ $brand->brand_name }}</td>
-                            <td><img src="{{ asset('upload/' . $brand->logo) }}" alt="{{ $brand->brand_name }}" style="max-width: 50px;"></td>
-                            <td>{{ $brand->is_featured == 1 ? 'Yes' : 'No' }}</td>
-                            <td>{{ $brand->status == 1 ? 'Active' : 'Inactive' }}</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><img src="{{ asset('upload/' . $i->logo) }}" alt="{{ $i->brand_name }}" height="120" width="120"></td>
+                            <td>{{ $i->brand_name }}</td>
+                            <td>{{ $i->is_featured }}</td>
+                            <td>{{ $i->status }}</td>
+                            <td>{{ $i->created_at }}</td>
                             <td style="text-align: center;">
-                                <a style="margin: 0 5px" href="{{ route('admin.brands.show', $brand->id) }}"><i class="fa-light fa-eye"></i></a>
-                                <a style="margin: 0 5px" href="{{ route('admin.brands.edit', $brand->id) }}"><i class="fa-light fa-pen-to-square"></i></a>
-                                <a style="margin: 0 5px" onclick="return confirm('Are you sure?')" href="{{ route('admin.brands.destroy', $brand->id) }}"><i class="fa-light fa-trash"></i></a>
+                                <a style="margin: 0 5px" href="{{ route('admin.brands.show',  $i->id) }}"><i class="fa-light fa-eye"></i></a>
+                                <a style="margin: 0 5px" href="{{ route('admin.brands.edit',  $i->id) }}"><i class="fa-light fa-pen-to-square"></i></a>
+                                <a style="margin: 0 5px" onclick="return confirm('Are you sure?')" href="{{ route('admin.brands.destroy',  $i->id) }}"><i class="fa-light fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach
@@ -176,24 +182,26 @@
 
                 <div class="table-bottom-control"></div>
             </div>
+
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#brandLogo').on('change', function() {
-            var input = $(this)[0];
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#previewImage').attr('src', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        });
-    });
+    function previewImage(input) {
+        var preview = document.getElementById('image-preview');
+        var imagePreviewContainer = document.querySelector('.image-preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                imagePreviewContainer.style.display = 'block'; // Hiển thị hình ảnh xem trước
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '';
+            imagePreviewContainer.style.display = 'none'; // Ẩn hình ảnh xem trước nếu không có tệp được chọn
+        }
+    }
 
 </script>
-
 @endsection

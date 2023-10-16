@@ -12,8 +12,7 @@ class CategoryController extends Controller
 {
     public function manage()
     {
-        $data['items'] = DB::table('categories')
-            ->get();
+        $data['items'] = DB::table('categories')->get();
         return view('admin.categories.manage', $data);
     }
 
